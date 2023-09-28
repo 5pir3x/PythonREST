@@ -15,7 +15,7 @@ class Store:
 
     def __str__(self):
         return {
-            self.id : {
+            self.id: {
                 "id": self.id,
                 "name": self.name,
                 "items": self.items
