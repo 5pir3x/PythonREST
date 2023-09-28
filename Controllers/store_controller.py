@@ -19,14 +19,15 @@ def get_store():
     try:
         store_id = int(request.args.get("storeId"))
     except TypeError:
-        return {"message": "Missing parameter storeId"}, 404
+        return {"message": "Missing parameter storeId"}, 400
     try:
         store = stores[store_id]
     except KeyError:
         return {"message": "Store not found"}, 404
     return store.__str__()
 
-#works for JSON= {
+
+# works for JSON= {
 # "id": 1,
 # "items":
 # [
@@ -45,6 +46,5 @@ def get_store():
 def add_store():
     body = request.get_json()
     listofItems: [Item] = [Item(item["id"], item["price"], item["description"]) for item in body["items"]]
-    print(listofItems)
     stores[body["id"]] = Store(body["id"], body["name"], listofItems)
     return stores[body["id"]].__str__()
