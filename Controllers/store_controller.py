@@ -16,14 +16,14 @@ def get_stores():
 @store_controller.route("/store", methods=["GET"])
 def get_store():
     # Get the 'storeId' parameter from the URL query string
-    store_id = int(request.args.get("storeId"))
-    if store_id is None:
-        return {"message": "Missing parameter storeId"}, 400
-    else:
-        try:
-            store = stores[store_id]
-        except KeyError:
-            return {"message": "Store not found"}, 404
+    try:
+        store_id = int(request.args.get("storeId"))
+    except TypeError:
+        return {"message": "Missing parameter storeId"}, 404
+    try:
+        store = stores[store_id]
+    except KeyError:
+        return {"message": "Store not found"}, 404
     return store.__str__()
 
 #works for JSON= {
