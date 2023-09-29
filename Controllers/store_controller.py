@@ -44,6 +44,20 @@ def get_store():
 @store_controller.route("/store", methods=["POST"])
 def add_store():
     body = request.get_json()
-    listofItems: [Item] = [Item(item["id"], item["price"], item["description"]) for item in body["items"]]
-    stores[body["id"]] = Store(body["id"], body["name"], listofItems)
+    listOfItems: [Item] = [Item(item["id"], item["price"], item["description"]) for item in body["items"]]
+    stores[body["id"]] = Store(body["id"], body["name"], listOfItems)
     return stores[body["id"]].__str__()
+
+
+@store_controller.route("/store", methods=["DELETE"])
+def delete_store():
+    # Get the 'storeId' parameter from the URL query string
+    try:
+        store_id = int(request.args.get("storeId"))
+    except TypeError:
+        return {"message": "Missing parameter storeId"}, 400
+    try:
+        del stores[store_id]
+    except KeyError:
+        return {"message": "Store not found"}, 404
+    return {f"message": f"Store with id={store_id} has been deleted"}
